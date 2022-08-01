@@ -33,7 +33,8 @@ public class MMapDataAccessTest extends DataAccessTest {
     public void textMix() {
         DataAccess da = new RAMDataAccess(location);
         assertFalse(da.loadExisting());
-        da.alloc(300).setInt(7, 123);
+        da.ensureCapacity(300);
+        da.setInt(7, 123);
         da.close();
         da = createDataAccess(location);
         assertTrue(da.loadExisting());

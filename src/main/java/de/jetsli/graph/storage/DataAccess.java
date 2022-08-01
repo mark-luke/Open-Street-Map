@@ -28,7 +28,7 @@ public interface DataAccess {
 
     int getInt(int index);
 
-    DataAccess alloc(long bytes);
+    void ensureCapacity(long bytes);
 
     boolean loadExisting();
 
