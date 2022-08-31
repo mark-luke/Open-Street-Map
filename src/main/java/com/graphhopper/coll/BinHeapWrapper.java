@@ -20,19 +20,19 @@ package com.graphhopper.coll;
  */
 public interface BinHeapWrapper<K, V> {
 
-    void update(K key, V value);
+    void update(V value, K key);
 
-    void insert(K key, V value);
+    void insert(V value, K key);
 
     boolean isEmpty();
     
     int size();
 
-    K peekKey();
+    K peekElement();
 
-    V peekValue();
+    V peekKey();
 
-    K pollKey();
+    K pollElement();
 
     // not necessary? V pollValue();
 
