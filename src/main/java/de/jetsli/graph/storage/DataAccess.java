@@ -22,7 +22,7 @@ package de.jetsli.graph.storage;
  *
  * @author Peter Karich
  */
-public interface DataAccess {
+public interface DataAccess extends Storable {
 
     void setInt(long index, int value);
 
@@ -32,18 +32,7 @@ public interface DataAccess {
 
     int getHeader(int index);
 
-    boolean loadExisting();
-
-    DataAccess createNew(long bytes);
+    void createNew(long bytes);
 
     void ensureCapacity(long bytes);
-
-    DataAccess flush();
-
-    /**
-     * Do not access this object after calling this method. It would result in undefined behaviour
-     */
-    DataAccess close();
-
-    int capacity();
 }
