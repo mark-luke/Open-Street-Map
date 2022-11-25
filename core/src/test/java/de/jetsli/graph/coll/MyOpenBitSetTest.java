@@ -15,20 +15,13 @@
  */
 package de.jetsli.graph.coll;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
 /**
- *
- * @author Peter Karich, info@jetsli.de
+ * @author Peter Karich
  */
-public class MyOpenBitSetTest {
-    
-    @Test
-    public void testToString() {
-        MyOpenBitSet bs = new MyOpenBitSet();
-        bs.add(12);
-        bs.add(1);
-        assertEquals("1, 12", bs.toString());
+public class MyOpenBitSetTest extends AbstractMyBitSetTest {
+
+    @Override
+    public MyBitSet createBitSet(int no) {
+        return new MyOpenBitSet(no);
     }
 }
