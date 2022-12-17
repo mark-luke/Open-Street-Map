@@ -26,5 +26,4 @@ public class DijkstraSimpleTest extends AbstractRoutingAlgorithmTester {
     @Override public RoutingAlgorithm createAlgo(Graph g) {
         return new DijkstraSimple(g);
     }
-
 }
