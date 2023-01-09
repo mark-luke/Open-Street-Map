@@ -15,45 +15,18 @@
  */
 package de.jetsli.graph.routing.util;
 
-import de.jetsli.graph.routing.AlgoType;
 import de.jetsli.graph.util.EdgeIterator;
 
 /**
+ * Specifies how the best route is calculated. E.g. the fastest or shortest route.
+ *
  * @author Peter Karich
  */
-public class WeightCalculation {
+public interface WeightCalculation {
 
-    public static WeightCalculation SHORTEST = new WeightCalculation(AlgoType.SHORTEST);
-    public static WeightCalculation FASTEST = new WeightCalculation(AlgoType.FASTEST);
-    private AlgoType type = AlgoType.SHORTEST;
+    double getWeight(EdgeIterator iter);
 
-    public WeightCalculation() {
-    }
+    double apply(double currDistToGoal);
 
-    public WeightCalculation(AlgoType type) {
-        this.type = type;
-    }
-
-    public double getWeight(EdgeIterator iter) {
-        if (AlgoType.FASTEST.equals(type)) {
-            return iter.distance() / EdgeFlags.getSpeedPart(iter.flags());
-        } else
-            return iter.distance();
-    }
-
-    public double apply(double currDistToGoal) {
-        if (AlgoType.FASTEST.equals(type))
-            return currDistToGoal / EdgeFlags.MAX_SPEED;
-        return currDistToGoal;
-    }
-
-    public double apply(double currDistToGoal, int flags) {
-        if (AlgoType.FASTEST.equals(type))
-            return currDistToGoal / EdgeFlags.getSpeedPart(flags);
-        return currDistToGoal;
-    }
-
-    @Override public String toString() {
-        return type.toString();
-    }
+    double apply(double currDistToGoal, int flags);
 }
