@@ -20,8 +20,8 @@ import com.graphhopper.util.Helper;
 /**
  * Copied from Android project. android.util.LongSparseArray.java
  *
- * SparseArrays map longs to Objects. Unlike a normal array of Objects, there can be gaps in the
- * indices. It is intended to be more efficient than using a HashMap to map Longs to Objects.
+ * SparseArrays map longs to longs. Unlike a normal array of longs, there can be gaps in the
+ * indices.
  */
 public class SparseLongLongArray {
 
