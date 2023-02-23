@@ -16,8 +16,8 @@
 package de.jetsli.graph.ui;
 
 import de.jetsli.graph.routing.AStar;
-import de.jetsli.graph.storage.Graph;
 import de.jetsli.graph.storage.EdgeEntry;
+import de.jetsli.graph.storage.Graph;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
