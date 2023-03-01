@@ -41,9 +41,10 @@ public class DefaultEdgeFilter implements EdgeFilter {
 
     @Override public boolean accept(EdgeIterator iter) {
         int flags = iter.flags();
-        if (!in && !encoder.isForward(flags) || !out && !encoder.isBackward(flags))
-            return false;
+        return out && encoder.isForward(flags) || in && encoder.isBackward(flags);
+    }
 
-        return true;
+    @Override public String toString() {
+        return encoder.toString() + ", in:" + in + ", out:" + out;
     }
 }
