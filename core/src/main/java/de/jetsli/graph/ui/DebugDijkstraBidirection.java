@@ -24,7 +24,7 @@ import java.awt.Graphics2D;
 /**
  * @author Peter Karich
  */
-public class DebugDijkstraBidirection extends DijkstraBidirectionRef {
+public class DebugDijkstraBidirection extends DijkstraBidirectionRef implements DebugAlgo {
 
     private MyGraphics mg;
     private Graphics2D g2;
@@ -34,6 +34,7 @@ public class DebugDijkstraBidirection extends DijkstraBidirectionRef {
         this.mg = mg;
     }
 
+    @Override
     public void setGraphics2D(Graphics2D g2) {
         this.g2 = g2;
     }
