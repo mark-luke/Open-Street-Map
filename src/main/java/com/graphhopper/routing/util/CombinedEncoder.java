@@ -21,16 +21,21 @@ package com.graphhopper.routing.util;
 /**
  * @author Peter Karich
  */
-public interface CombinedEncoder {
+public class CombinedEncoder {
 
-    /**
-     * Returns the flags with an opposite direction if not both ways.
-     */
-    int swapDirection(int flags);
+    CarFlagsEncoder carEncoder = new CarFlagsEncoder();
+    BikeFlagsEncoder bikeEncoder = new BikeFlagsEncoder();
+    FootFlagsEncoder footEncoder = new FootFlagsEncoder();
 
-    /**
-     * Returns default flags (e.g. with default speed) and the specified
-     * direction restriction.
-     */
-    int flagsDefault(boolean bothDirections);
+    public int swapDirection(int flags) {
+        flags = footEncoder.swapDirection(flags);
+        flags = bikeEncoder.swapDirection(flags);
+        return carEncoder.swapDirection(flags);
+    }
+
+    public int flagsDefault(boolean bothDirections) {
+        int res = footEncoder.flagsDefault(bothDirections);
+        res |= bikeEncoder.flagsDefault(bothDirections);
+        return res | carEncoder.flagsDefault(bothDirections);
+    }
 }
