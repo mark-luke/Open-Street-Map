@@ -15,7 +15,7 @@
  */
 package de.jetsli.graph.dijkstra;
 
-import de.jetsli.graph.storage.GeoGraph;
+import de.jetsli.graph.storage.MemoryGraph;
 
 /**
  *
@@ -23,9 +23,9 @@ import de.jetsli.graph.storage.GeoGraph;
  */
 public class DijkstraMultipleAtOnce {
 
-    private GeoGraph graph;
+    private MemoryGraph graph;
 
-    public DijkstraMultipleAtOnce(GeoGraph graph) {
+    public DijkstraMultipleAtOnce(MemoryGraph graph) {
         this.graph = graph;
     }
 
