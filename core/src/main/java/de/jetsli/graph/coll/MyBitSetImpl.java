@@ -43,4 +43,13 @@ public class MyBitSetImpl extends BitSet implements MyBitSet {
     public int getCardinality() {
         return super.cardinality();
     }        
+
+    @Override
+    public void ensureCapacity(int size) {
+    }
+
+    @Override
+    public int next(int index) {
+        return super.nextSetBit(index);
+    }
 }
