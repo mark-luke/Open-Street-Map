@@ -28,4 +28,6 @@ public interface Location2IDIndex {
     Location2IDIndex prepareIndex(int capacity);
 
     int findID(final double lat, final double lon);
+    
+    float calcMemInMB();
 }

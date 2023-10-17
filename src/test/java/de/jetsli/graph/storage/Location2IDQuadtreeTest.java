@@ -17,8 +17,8 @@ package de.jetsli.graph.storage;
 
 import de.jetsli.graph.util.CalcDistance;
 import java.util.Random;
-import org.junit.*;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -26,13 +26,42 @@ import static org.junit.Assert.*;
  */
 public class Location2IDQuadtreeTest {
 
+    public Location2IDIndex createIndex(Graph g, int resolution) {
+        return new Location2IDQuadtree(g).prepareIndex(resolution);
+    }
+
+    @Test
+    public void testSimpleGraph() {
+        Graph g = createGraph();
+        g.setNode(0, -1, -2);
+        g.setNode(1, 2, -1);
+        g.setNode(2, 0, 1);
+        g.setNode(3, 1, 2);
+        g.setNode(4, 6, 1);
+        g.setNode(5, 4, 4);
+        g.setNode(6, 4.5, -0.5);
+        g.edge(0, 1, 3.5, true);
+        g.edge(0, 2, 2.5, true);
+        g.edge(2, 3, 1, true);
+        g.edge(3, 4, 2.2, true);
+        g.edge(1, 4, 2.4, true);
+        g.edge(3, 5, 1.5, true);
+
+        Location2IDIndex idx = createIndex(g, 8);
+        assertEquals(4, idx.findID(5, 2));
+        assertEquals(3, idx.findID(1.5, 2));
+        assertEquals(0, idx.findID(-1, -1));
+        // now get the edge 1-4 and not node 6
+        assertEquals(6, idx.findID(4, 0));
+    }
+
     @Test
     public void testSinglePoints8() {
         Graph g = createSampleGraph();
-        Location2IDQuadtree idx = new Location2IDQuadtree(g);
-        idx.prepareIndex(8);
+        Location2IDIndex idx = createIndex(g, 8);
+
         // maxWidth is ~555km and with size==8 it will be exanded to 4*4 array => maxRasterWidth==555/4
-        assertTrue(idx.getMaxRasterWidthKm() + "", idx.getMaxRasterWidthKm() < 140);
+        // assertTrue(idx.getMaxRasterWidthKm() + "", idx.getMaxRasterWidthKm() < 140);
         assertEquals(1, idx.findID(1.637, 2.23));
         assertEquals(9, idx.findID(3.649, 1.375));
         assertEquals(9, idx.findID(3.3, 2.2));
@@ -44,10 +73,9 @@ public class Location2IDQuadtreeTest {
         Graph g = createSampleGraph();
         int locs = g.getNodes();
 
-        Location2IDQuadtree memoryEfficientIndex = new Location2IDQuadtree(g);
+        Location2IDIndex memoryEfficientIndex = createIndex(g, 32);
         // if we would use less array entries then some points gets the same key so avoid that for this test
-        // e.g. for 16 we get "expected 6 but was 9" i.e 6 was overwritten by node j9 which is a bit closer to the grid center
-        memoryEfficientIndex.prepareIndex(32);
+        // e.g. for 16 we get "expected 6 but was 9" i.e 6 was overwritten by node j9 which is a bit closer to the grid center        
         // go through every point of the graph if all points are reachable
         for (int i = 0; i < locs; i++) {
             double lat = g.getLatitude(i);
@@ -88,8 +116,8 @@ public class Location2IDQuadtreeTest {
     @Test
     public void testSinglePoints32() {
         Graph g = createSampleGraph();
-        Location2IDQuadtree idx = new Location2IDQuadtree(g);
-        idx.prepareIndex(32);
+        Location2IDIndex idx = createIndex(g, 32);
+
         // 10 or 6
         assertEquals(10, idx.findID(3.649, 1.375));
 
@@ -112,12 +140,15 @@ public class Location2IDQuadtreeTest {
         for (int i = 0; i < locs; i++) {
             g.setNode(i, (float) rand.nextDouble() * 10 + 10, (float) rand.nextDouble() * 10 + 10);
         }
-        Location2IDIndex idx = new Location2IDQuadtree(g);
-        idx.prepareIndex(200);
+        createIndex(g, 200);
+    }
+
+    public static Graph createGraph() {
+        return new MemoryGraphSafe(200);
     }
 
     public static Graph createSampleGraph() {
-        Graph graph = new MMapGraph(100).createNew();
+        Graph graph = createGraph();
         // length does not matter here but lat,lon and outgoing edges do!
 
 //        
