@@ -37,4 +37,9 @@ class QuadEdgeSubdivisionAsReadableTriangulation implements ReadableTriangulatio
         Collection<QuadEdge> delegateEdges = delegate.getEdges();
         return delegateEdges.stream().map(ReadableQuadEdge::wrap).collect(Collectors.toList());
     }
+
+    @Override
+    public ReadableQuadEdge getEdge(int v1, int v2) {
+        throw new UnsupportedOperationException();
+    }
 }
