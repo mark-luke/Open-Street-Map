@@ -20,7 +20,7 @@ package de.jetsli.graph.coll;
  *
  * Supports only integer value indices.
  *
- * @author Peter Karich, 
+ * @author Peter Karich,
  */
 public interface MyBitSet {
 
@@ -32,7 +32,12 @@ public interface MyBitSet {
 
     void clear();
 
-    void ensureCapacity(int size);
+    /**
+     * Ensures that the specified index is valid 
+     */
+    void ensureCapacity(int index);
 
     int next(int index);
+
+    void copyTo(MyBitSet bs);
 }
