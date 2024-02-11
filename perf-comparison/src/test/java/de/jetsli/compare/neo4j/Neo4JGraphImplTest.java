@@ -15,6 +15,7 @@
  */
 package de.jetsli.compare.neo4j;
 
+import de.jetsli.compare.misc.AbstractGraphTester;
 import de.jetsli.graph.storage.Graph;
 import org.junit.After;
 
@@ -27,7 +28,7 @@ public class Neo4JGraphImplTest extends AbstractGraphTester {
     private Neo4JGraphImpl g;
     
     @Override
-    Graph createGraph(int size) {
+    protected Graph createGraph(int size) {
         g = new Neo4JGraphImpl(null).setBulkSize(1);
         g.init(true);
         return g;
