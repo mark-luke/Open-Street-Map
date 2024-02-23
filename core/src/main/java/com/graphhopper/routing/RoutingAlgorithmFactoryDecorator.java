@@ -17,14 +17,14 @@
  */
 package com.graphhopper.routing;
 
+import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.routing.util.HintsMap;
-import com.graphhopper.util.CmdArgs;
 
 /**
  * @author Peter Karich
  */
 public interface RoutingAlgorithmFactoryDecorator {
-    void init(CmdArgs args);
+    void init(GraphHopperConfig ghConfig);
 
     boolean isEnabled();
 
