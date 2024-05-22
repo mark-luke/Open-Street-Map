@@ -23,4 +23,6 @@ package de.jetsli.graph.routing;
 public interface RoutingAlgorithm {
 
     Path calcShortestPath(int from, int to);
+    
+    RoutingAlgorithm clear();
 }
