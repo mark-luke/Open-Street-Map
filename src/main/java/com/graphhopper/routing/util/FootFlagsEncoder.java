@@ -19,14 +19,39 @@
 package com.graphhopper.routing.util;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Peter Karich
  */
 public class FootFlagsEncoder extends AbstractFlagEncoder {
 
-    private static final Map<String, Integer> SPEED = new FootSpeed();    
+    private final Set<String> saveHighwayTags = new HashSet<String>() {
+        {
+            add("footway");
+            add("path");
+            add("steps");
+            add("pedestrian");
+            add("foot");
+            add("living_street");            
+            add("track");
+        }
+    };
+    private final Set<String> allowedHighwayTags = new HashSet<String>() {
+        {
+            addAll(saveHighwayTags);
+            add("trunk");
+            add("primary");
+            add("secondary");
+            add("tertiary");
+            add("unclassified");
+            add("residential");
+            add("road");
+        }
+    };
+    private static final Map<String, Integer> SPEED = new FootSpeed();
 
     public FootFlagsEncoder() {
         super(16, 2, SPEED.get("mean"), SPEED.get("max"));
@@ -38,6 +63,20 @@ public class FootFlagsEncoder extends AbstractFlagEncoder {
 
     @Override public String toString() {
         return "FOOT";
+    }
+
+    /**
+     * Separate ways for pedestrians.
+     */
+    public boolean isAllowedHighway(String highwayValue) {
+        return allowedHighwayTags.contains(highwayValue);
+    }
+
+    /**
+     * Some ways are okay but not separate for pedestrians.
+     */
+    public boolean isSaveHighway(String highwayValue) {
+        return saveHighwayTags.contains(highwayValue);
     }
 
     private static class FootSpeed extends HashMap<String, Integer> {
