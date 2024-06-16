@@ -62,7 +62,7 @@ public class CarFlagEncoder extends AbstractFlagEncoder
     public CarFlagEncoder( int speedBits, double speedFactor, int maxTurnCosts )
     {
         super(speedBits, speedFactor, maxTurnCosts);
-        restrictions = new ArrayList<String>(Arrays.asList("motorcar", "motor_vehicle", "vehicle", "access"));
+        restrictions.addAll(Arrays.asList("motorcar", "motor_vehicle", "vehicle", "access"));
         restrictedValues.add("private");
         restrictedValues.add("agricultural");
         restrictedValues.add("forestry");
@@ -82,6 +82,7 @@ public class CarFlagEncoder extends AbstractFlagEncoder
         absoluteBarriers.add("stile");
         absoluteBarriers.add("turnstile");
         absoluteBarriers.add("cycle_barrier");
+        absoluteBarriers.add("motorcycle_barrier");
         absoluteBarriers.add("block");
 
         trackTypeSpeedMap.put("grade1", 20); // paved
@@ -134,7 +135,7 @@ public class CarFlagEncoder extends AbstractFlagEncoder
         // first two bits are reserved for route handling in superclass
         shift = super.defineWayBits(index, shift);
         speedEncoder = new EncodedDoubleValue("Speed", shift, speedBits, speedFactor, defaultSpeedMap.get("secondary"), defaultSpeedMap.get("motorway"));
-        return shift + speedBits;
+        return shift + speedEncoder.getBits();
     }
 
     protected double getSpeed( OSMWay way )
@@ -142,7 +143,7 @@ public class CarFlagEncoder extends AbstractFlagEncoder
         String highwayValue = way.getTag("highway");
         Integer speed = defaultSpeedMap.get(highwayValue);
         if (speed == null)
-            throw new IllegalStateException("car, no speed found for:" + highwayValue);
+            throw new IllegalStateException(toString() + ", no speed found for:" + highwayValue);
 
         if (highwayValue.equals("track"))
         {
@@ -191,7 +192,7 @@ public class CarFlagEncoder extends AbstractFlagEncoder
 
         // do not drive street cars into fords
         boolean carsAllowed = way.hasTag(restrictions, intendedValues);
-        if (blockFords && ("ford".equals(highwayValue) || way.hasTag("ford")) && !carsAllowed)
+        if (isBlockFords() && ("ford".equals(highwayValue) || way.hasTag("ford")) && !carsAllowed)
             return 0;
 
         // check access restrictions
@@ -212,7 +213,7 @@ public class CarFlagEncoder extends AbstractFlagEncoder
     }
 
     @Override
-    public long handleWayTags( OSMWay way, long allowed, long relationCode )
+    public long handleWayTags( OSMWay way, long allowed, long relationFlags )
     {
         if (!isAccept(allowed))
             return 0;
@@ -222,10 +223,7 @@ public class CarFlagEncoder extends AbstractFlagEncoder
         {
             // get assumed speed from highway type
             double speed = getSpeed(way);
-            double maxSpeed = getMaxSpeed(way);
-            if (maxSpeed > 0)
-                // apply maxSpeed which can mean increase or decrease
-                speed = maxSpeed * 0.9;
+            speed = applyMaxSpeed(way, speed, true);
 
             // limit speed to max 30 km/h if bad surface
             if (speed > 30 && way.hasTag("surface", badSurfaceSpeedMap))
