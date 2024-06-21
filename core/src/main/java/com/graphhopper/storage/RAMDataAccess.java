@@ -25,7 +25,7 @@ import java.io.RandomAccessFile;
 import java.util.Arrays;
 
 /**
- * This is an in-memory data structure but with the possibility to be stored on
+ * This is an in-memory data structure with the possibility to be stored on
  * flush().
  *
  * @author Peter Karich
@@ -173,7 +173,7 @@ public class RAMDataAccess extends AbstractDataAccess {
                 raFile.close();
             }
         } catch (Exception ex) {
-            throw new RuntimeException("Couldn't store integers to " + toString(), ex);
+            throw new RuntimeException("Couldn't store bytes to " + toString(), ex);
         }
     }
 

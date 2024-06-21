@@ -24,7 +24,7 @@ package com.graphhopper.storage;
  * @see MMapDataAccess
  * @author Peter Karich
  */
-public class MMapDirectory extends AbstractDirectory {
+public class MMapDirectory extends GHDirectory {
 
     // reserve the empty constructor for direct mapped memory
     private MMapDirectory() {
@@ -33,17 +33,6 @@ public class MMapDirectory extends AbstractDirectory {
     }
 
     public MMapDirectory(String _location) {
-        super(_location);
-        mkdirs();
-    }
-
-    @Override
-    protected DataAccess create(String id, String location) {
-        return new MMapDataAccess(id, location);
-    }
-
-    @Override
-    public boolean isLoadRequired() {
-        return true;
+        super(_location, DAType.MMAP);
     }
 }
