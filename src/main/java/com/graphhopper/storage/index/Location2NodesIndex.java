@@ -20,7 +20,7 @@ package com.graphhopper.storage.index;
 
 import com.graphhopper.routing.util.EdgeFilter;
 import com.graphhopper.util.shapes.GHPlace;
-import gnu.trove.list.TIntList;
+import gnu.trove.TIntCollection;
 
 /**
  * Look up ids from gps coordinates.
@@ -29,5 +29,9 @@ import gnu.trove.list.TIntList;
  */
 public interface Location2NodesIndex {
 
-    TIntList findIDs(GHPlace point, EdgeFilter edgeFilter);
+    /**
+     * @return unique but sorted list of node ids. Sorted by distance to the
+     * specified point
+     */
+    TIntCollection findIDs(GHPlace point, EdgeFilter edgeFilter);
 }
