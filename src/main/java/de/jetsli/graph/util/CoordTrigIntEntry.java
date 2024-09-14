@@ -31,12 +31,11 @@ public class CoordTrigIntEntry extends CoordTrig<Integer> {
         this.value = value;
     }
 
-    @Override
-    public void setValue(Integer value) {
+    @Override public void setValue(Integer value) {
         this.value = value;
     }
 
-    public Integer getValue() {
+    @Override public Integer getValue() {
         return value;
     }
 }
